@@ -1,6 +1,8 @@
 import numpy as np
 import scipy.optimize
+# disable bundler
 from utils import *
+# enable bundler
 
 
 def conjugate_gradients(Avp_f, b, nsteps, rdotr_tol=1e-10):

@@ -1,6 +1,8 @@
 import multiprocessing
+# disable bundler
 from utils.replay_memory import Memory
 from utils.torch import *
+# enable bundler
 import math
 import time
 
@@ -146,3 +148,28 @@ class Agent:
         log['action_min'] = np.min(np.vstack(batch.action), axis=0)
         log['action_max'] = np.max(np.vstack(batch.action), axis=0)
         return batch, log
+
+    def evaluate(self, num_episodes = 100, max_steps_per_episode = 10000):
+        env = self.env
+        total_reward = 0
+        s = 'episode, step, reward\n' 
+        for episode in range(num_episodes):
+            state = env.reset()
+            done = False
+            steps = 0
+            while not done and steps < max_steps_per_episode:
+                state_var = tensor(state).unsqueeze(0)
+                with torch.no_grad():
+                    if self.mean_action:
+                        action = self.policy(state_var)[0][0].numpy()
+                    else:
+                        action = self.policy.select_action(state_var)[0].numpy()
+                action = int(action) if self.policy.is_disc_action else action.astype(np.float64)
+                state, reward, done, _ = env.step(action)
+                total_reward += reward
+                if reward > 0:
+                    s += str(episode) + ',' + str(steps) + ',' + str(reward) + '\n'
+                steps += 1
+        return total_reward / num_episodes
+
+        

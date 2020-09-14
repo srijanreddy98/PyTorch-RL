@@ -6,17 +6,18 @@ import pickle
 import time
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+# disable bundler
 from utils import *
 from models.mlp_policy import Policy
 from models.mlp_critic import Value
 from models.mlp_policy_disc import DiscretePolicy
 from models.mlp_discriminator import Discriminator
-from torch import nn
+
 from core.ppo import ppo_step
 from core.common import estimate_advantages
 from core.agent import Agent
-
-
+# enable bundler
+from torch import nn
 parser = argparse.ArgumentParser(description='PyTorch GAIL example')
 parser.add_argument('--env-name', default="Hopper-v2", metavar='G',
                     help='name of the environment to run')
