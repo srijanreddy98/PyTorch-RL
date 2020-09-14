@@ -41,7 +41,7 @@ parser.add_argument('--seed', type=int, default=1, metavar='N',
                     help='random seed (default: 1)')
 parser.add_argument('--min-batch-size', type=int, default=2048, metavar='N',
                     help='minimal batch size per PPO update (default: 2048)')
-parser.add_argument('--max-iter-num', type=int, default=5, metavar='N',
+parser.add_argument('--max-iter-num', type=int, default=500, metavar='N',
                     help='maximal number of main iterations (default: 500)')
 parser.add_argument('--log-interval', type=int, default=1, metavar='N',
                     help='interval between training status logs (default: 10)')
@@ -153,6 +153,6 @@ best = fmin(fn=train,
     space=space,
     algo=tpe.suggest,
     trials= trials,
-    max_evals=15)
+    max_evals=20)
 
 with open('trails', 'wb') as f: pickle.dump(trials, f)
